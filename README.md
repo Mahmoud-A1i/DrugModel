@@ -148,7 +148,7 @@ Where $FP_{generated}$ and $FP_{target}$ are Morgan fingerprints of the generate
 
 ### Dynamic Coefficient Adjustment
 
-The coefficients $\alpha$ and $\beta$ are adjusted during training based on the model's performance:
+The coefficients $\alpha$ and $\beta$ are adjusted during training based on the model's performance at the end of every epoch:
 
 $$ \alpha_{new} = \begin{cases} 
 \min(\alpha + \alpha_{adjust\_rate}, \alpha_{max}), & \text{if } validity\_score < validity\_threshold \\
@@ -156,9 +156,9 @@ $$ \alpha_{new} = \begin{cases}
 \end{cases} $$
 
 $$ \beta_{new} = \begin{cases}
-\min(\beta + \beta_{adjust\_rate}, \beta_{max}), & \text{if } similarity\_score < similarity\_threshold \\
-\max(\beta - \beta_{adjust\_rate}, \beta_{min}), & \text{otherwise}
-\end{cases} $$
+\min(\beta + \beta_{adjust_{rate}}, \beta_{max}), & \text{if } similarity_{score} < similarity_{threshold} \\
+\max(\beta - \beta_{adjust_{rate}}, \beta_{min}), & \text{otherwise}
+\end{cases}
 
 This dynamic adjustment helps balance the different components of the loss function throughout the training process.
 
