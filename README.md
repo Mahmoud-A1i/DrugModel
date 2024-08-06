@@ -112,31 +112,60 @@ This architecture allows the model to consider not just the partial SMILES strin
 Our model uses a custom loss function that combines cross-entropy loss with chemical validity and similarity losses. This helps ensure that the generated molecules are not only syntactically correct but also chemically valid and similar to the target molecules.
 
 
+## Custom Loss Function
+
+Our model uses a custom loss function that combines cross-entropy loss with chemical validity and similarity losses. This helps ensure that the generated molecules are not only syntactically correct but also chemically valid and similar to the target molecules.
+
 The total loss is calculated as follows:
-```L_total = L_CE + α * L_validity + β * L_similarity```
+
+$$ L_{total} = L_{CE} + \alpha \cdot L_{validity} + \beta \cdot L_{similarity} $$
 
 Where:
-- `L_CE` is the cross-entropy loss
-- `L_validity` is the validity loss
-- `L_similarity` is the similarity loss
-- `α` and `β` are dynamically adjusted coefficients
+- $L_{CE}$ is the cross-entropy loss
+- $L_{validity}$ is the validity loss
+- $L_{similarity}$ is the similarity loss
+- $\alpha$ and $\beta$ are dynamically adjusted coefficients
 
-### Cross-Entropy Loss (L_CE)
+### Cross-Entropy Loss ($L_{CE}$)
 
 The cross-entropy loss is calculated using a standard cross-entropy function with label smoothing:
-```L_CE = - Σ (y_i * log(p_i))```
 
-Where `y_i` are the smoothed target probabilities and `p_i` are the predicted probabilities.
+$$ L_{CE} = - \sum_{i} y_i \log(p_i) $$
 
-### Validity Loss (L_validity)
+Where $y_i$ are the smoothed target probabilities and $p_i$ are the predicted probabilities.
+
+### Validity Loss ($L_{validity}$)
 
 The validity loss is binary, penalizing invalid SMILES strings:
-```
-L_validity = {
-1, if SMILES is invalid
-0, if SMILES is valid
-}
-```
+
+$$ L_{validity} = \begin{cases} 
+1, & \text{if SMILES is invalid} \\
+0, & \text{if SMILES is valid}
+\end{cases} $$
+
+### Similarity Loss ($L_{similarity}$)
+
+The similarity loss is based on the Tanimoto similarity between the generated and target molecules:
+
+$$ L_{similarity} = 1 - \text{TanimotoSimilarity}(FP_{generated}, FP_{target}) $$
+
+Where $FP_{generated}$ and $FP_{target}$ are Morgan fingerprints of the generated and target molecules, respectively.
+
+### Dynamic Coefficient Adjustment
+
+The coefficients $\alpha$ and $\beta$ are adjusted during training based on the model's performance:
+
+$$ \alpha_{new} = \begin{cases} 
+\min(\alpha + \alpha_{adjust\_rate}, \alpha_{max}), & \text{if } validity\_score < validity\_threshold \\
+\max(\alpha - \alpha_{adjust\_rate}, \alpha_{min}), & \text{otherwise}
+\end{cases} $$
+
+$$ \beta_{new} = \begin{cases}
+\min(\beta + \beta_{adjust\_rate}, \beta_{max}), & \text{if } similarity\_score < similarity\_threshold \\
+\max(\beta - \beta_{adjust\_rate}, \beta_{min}), & \text{otherwise}
+\end{cases} $$
+
+This dynamic adjustment helps balance the different components of the loss function throughout the training process.
 
 The loss function balances between:
 1. Cross-entropy loss for accurate SMILES string generation
