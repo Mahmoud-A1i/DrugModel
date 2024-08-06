@@ -111,11 +111,6 @@ This architecture allows the model to consider not just the partial SMILES strin
 
 Our model uses a custom loss function that combines cross-entropy loss with chemical validity and similarity losses. This helps ensure that the generated molecules are not only syntactically correct but also chemically valid and similar to the target molecules.
 
-
-## Custom Loss Function
-
-Our model uses a custom loss function that combines cross-entropy loss with chemical validity and similarity losses. This helps ensure that the generated molecules are not only syntactically correct but also chemically valid and similar to the target molecules.
-
 The total loss is calculated as follows:
 
 $$ L_{total} = L_{CE} + \alpha \cdot L_{validity} + \beta \cdot L_{similarity} $$
@@ -167,9 +162,3 @@ $$ \beta_{new} = \begin{cases}
 
 This dynamic adjustment helps balance the different components of the loss function throughout the training process.
 
-The loss function balances between:
-1. Cross-entropy loss for accurate SMILES string generation
-2. Validity loss to encourage the generation of chemically valid molecules
-3. Similarity loss to ensure the generated molecules are similar to the target molecules
-
-The weights of these components are dynamically adjusted during training based on the model's performance.
