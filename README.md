@@ -151,7 +151,7 @@ Where $FP_{generated}$ and $FP_{target}$ are Morgan fingerprints of the generate
 The coefficients $\alpha$ and $\beta$ are adjusted during training based on the model's performance at the end of every epoch:
 
 $$ \alpha_{new} = \begin{cases} 
-\min(\alpha + \alpha_{adjust\_rate}, \alpha_{max}), & \text{if } validity\_score < validity\_threshold \\
+\min(\alpha + \alpha_{adjust\_rate}, \alpha_{max}), & \text{if } validity score < validity threshold \\
 \max(\alpha - \alpha_{adjust\_rate}, \alpha_{min}), & \text{otherwise}
 \end{cases} $$
 
