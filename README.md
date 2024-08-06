@@ -47,8 +47,8 @@ DrugModel/
 ```
 git clone https://github.com/Mahmoud-A1i/DrugModel.git
 cd DrugModel
-
 ```
+
 2. Create a virtual environment (optional but recommended):
 ```
 python -m venv venv
