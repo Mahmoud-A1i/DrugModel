@@ -156,8 +156,8 @@ $$ \alpha_{new} = \begin{cases}
 \end{cases} $$
 
 $$ \beta_{new} = \begin{cases}
-\min(\beta + \beta_{adjust_{rate}}, \beta_{max}), & \text{if } similarity_{score} < similarity_{threshold} \\
-\max(\beta - \beta_{adjust_{rate}}, \beta_{min}), & \text{otherwise}
+\min(\beta + \beta_{adjust_rate}, \beta_{max}), & \text{if } similarity_{score} < similarity_{threshold} \\
+\max(\beta - \beta_{adjust_rate}, \beta_{min}), & \text{otherwise}
 \end{cases}
 
 This dynamic adjustment helps balance the different components of the loss function throughout the training process.
