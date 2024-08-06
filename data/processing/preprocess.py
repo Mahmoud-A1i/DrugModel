@@ -18,7 +18,7 @@ Arguments:
     --sa_score: Synthetic Accessibility score threshold (default: 5.0)
     --min_smiles_length: Minimum number of atoms in SMILES (default: 5)
     --input_file: Input file containing SMILES strings (default: smiles.txt)
-    --output_file: Output CSV file (default: filtered_smiles_with_properties.csv)
+    --output_file: Output CSV file (default: processed_smiles.csv)
     --n_cores: Number of CPU cores to use (default: all available)
     --split_ratio: Ratio for train/test split (default: 0.8)
 """
@@ -54,7 +54,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--input_file", type=str, default="smiles.txt",
                         help="Input file containing SMILES strings (default: smiles.txt)")
     parser.add_argument("--output_file", type=str, default="processed_smiles.csv",
-                        help="Output CSV file (default: filtered_smiles_with_properties.csv)")
+                        help="Output CSV file (default: processed_smiles.csv)")
     parser.add_argument("--n_cores", type=int, default=multiprocessing.cpu_count(),
                         help="Number of CPU cores to use (default: all available)")
     parser.add_argument("--split_ratio", type=float, default=0.8,
