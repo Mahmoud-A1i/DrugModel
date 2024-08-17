@@ -28,12 +28,13 @@ from rdkit.Chem import Descriptors
 from rdkit.Chem import rdMolDescriptors
 from rdkit.Chem.Scaffolds import MurckoScaffold
 from rdkit.Chem import QED
-from moses.metrics.utils import SA
 import pandas as pd
 from tqdm import tqdm
 import multiprocessing
 import argparse
 from typing import List, Tuple, Optional
+
+from utils import calculateScore as SA
 
 RDLogger.DisableLog('rdApp.*')
 
