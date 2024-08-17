@@ -129,7 +129,7 @@ def train_model(config: Dict[str, Any]) -> None:
         print(f"Avg Validity Score:   {avg_validity_score:.4f} -> Alpha: {current_alpha:.4f}\nAvg Similarity Score: {avg_similarity_score:.4f} ->  Beta: {current_beta:.4f}")
 
         # Printing validation results
-        avg_val_loss = run_validation(config, model, val_dataloader, tokenizer_smiles_tgt, config['seq_len'], device, lambda msg: batch_iterator.write(msg), global_step, writer, loss_fn, epoch)
+        avg_val_loss, avg_ce_loss = run_validation(config, model, val_dataloader, tokenizer_smiles_tgt, config['seq_len'], device, lambda msg: batch_iterator.write(msg), global_step, writer, loss_fn, epoch)
 
         if avg_val_loss < best_performance:
             best_performance = avg_val_loss
@@ -141,9 +141,11 @@ def train_model(config: Dict[str, Any]) -> None:
                 'global_step': global_step,
                 'best_performance': best_performance
             }, best_model_filename)
-            print(f"Average Validation loss: {best_performance:.4f} - Best Model Saved")
+            print(f"Average CE Loss: {avg_ce_loss:.4f}")
+            print(f"Average Validity Loss: {best_performance:.4f} - Best Model Saved")
         else:
-            print(f"Average Validation loss: {avg_val_loss:.4f}")
+            print(f"Average CE Loss: {avg_ce_loss:.4f}")
+            print(f"Average Validity Loss: {avg_val_loss:.4f}")
         
         model_filename = get_weights_file_path(config, f"{epoch:02d}")
         torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(), 'optimizer_state_dict': optimizer.state_dict(), 'global_step': global_step}, model_filename)
