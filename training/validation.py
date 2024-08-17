@@ -3,14 +3,13 @@ This module provides functions for validating the model during training.
 """
 
 import torch
-from typing import List, Callable, Any, Dict
+from typing import List, Callable, Any, Dict, Tuple
 from tokenizers import Tokenizer
 from tqdm import tqdm
 import torchmetrics
-from moses.metrics.metrics import fraction_valid
 
 from generation import greedy_decode
-from utils import SMILESLoss, calculate_similarity
+from utils import SMILESLoss, calculate_similarity, fraction_valid
 
 
 def run_validation(config: Dict[str, Any],
@@ -24,7 +23,7 @@ def run_validation(config: Dict[str, Any],
                    writer: Any,
                    loss_fn: SMILESLoss,
                    epoch: int
-                  ) -> float:
+                  ) -> Tuple[float, float]:
     """
     Run validation on the model and print results.
 
@@ -41,7 +40,7 @@ def run_validation(config: Dict[str, Any],
         loss_fn (SMILESLoss): The loss function to calculate the average validation loss.
         epoch (int): The current epoch number.
     Returns:
-        float: Average validation loss
+        Tuple[float, float]: Average CE loss, Average validity loss
     """
     model.eval()
     
@@ -64,14 +63,17 @@ def run_validation(config: Dict[str, Any],
                 
             outputs = model(*(batch[k].to(device) for k in ['encoder_smiles_input', 'encoder_scaffold_input', 'decoder_input', 'encoder_scaffold_mask', 'encoder_smiles_mask', 'decoder_mask', 'mw', 'logp', 'hbd', 'hba', 'tpsa', 'rotatable_bonds', 'qed', 'sa_score']))
 
-            val_loss = loss_fn.compute_ce_loss(outputs, batch['label'].to(device))
-            total_val_loss += val_loss.item()
+            ce_loss = loss_fn.compute_ce_loss(outputs, batch['label'].to(device))
+            validity_loss, similarity_loss, validity_score, similarity_score = loss_fn.chemical_losses(outputs, batch['label'].to(device))
+            total_ce_loss += ce_loss.item()
+            total_val_loss += validity_loss.item()
             count += 1
 
+    avg_ce_loss = total_ce_loss / count
     avg_val_loss = total_val_loss / count
 
     if epoch % config['test_metrics_freq'] == 0:
         cer = torchmetrics.text.CharErrorRate()
         print_msg(f"TEST: Validity: {fraction_valid(generated):.5f}, Similarity: {calculate_similarity(generated, expected):.5f}, CER: {cer(generated, expected).item():.5f}")
 
-    return avg_val_loss
+    return avg_val_loss, avg_ce_loss
