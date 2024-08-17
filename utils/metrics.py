@@ -21,10 +21,8 @@ from tabulate import tabulate
 import math
 from typing import Dict, Any, List
 
-sys.path.append('/data')
-import moses
-from moses.metrics.metrics import novelty, fraction_unique, fraction_valid
-from moses.metrics.utils import SA
+from utils import novelty, fraction_valid
+from utils import calculateScore as SA
 
 from generation import generate
 
