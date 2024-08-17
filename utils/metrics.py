@@ -21,8 +21,8 @@ from tabulate import tabulate
 import math
 from typing import Dict, Any, List
 
-from utils import novelty, fraction_valid
-from utils import calculateScore as SA
+from .sascorer import novelty, fraction_valid
+from .sascorer import calculateScore as SA
 
 from generation import generate
 
