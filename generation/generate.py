@@ -19,13 +19,13 @@ from data import SMILESDataset, causal_mask
 from .greedy import greedy_decode
 
 
-def generate(config: Dict[str, Any], input_data: list, weights_path: str = None, best: bool = False) -> List[Dict[str, str]]:
+def generate(config: Dict[str, Any], input_data: List[str], weights_path: str = None, best: bool = False) -> List[Dict[str, str]]:
     """
     Generate SMILES strings using a pre-trained transformer model.
 
     Args:
         config (Dict[str, Any]): Configuration dictionary.
-        input_data (list): List of dictionaries containing partial 'SMILES', optional 'Scaffold', 
+        input_data (List[str]): List of dictionaries containing partial 'SMILES', optional 'Scaffold', 
                            and properties like 'MolecularWeight', 'LogP', 'HBD', 'HBA', 'TPSA', 'RotatableBonds', 
                            'QED', 'SA_Score'.
                            'Scaffold' can be omitted if not available.
