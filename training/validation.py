@@ -45,7 +45,7 @@ def run_validation(config: Dict[str, Any],
     model.eval()
     
     count = 0
-    total_val_loss = 0.0
+    total_val_loss, total_ce_loss = 0.0, 0.0
     
     expected, generated = [], []
     
