@@ -153,7 +153,16 @@ The coefficients $\alpha$ and $\beta$ are adjusted during training based on the 
 
 $$ \alpha_{new} = \begin{cases} 
 \min(\alpha + \alpha_\text{adjust rate}, \alpha_{max}), & \text{if } \text{validity score} < \text{validity threshold} \\
-\max(\beta - \beta_\text{adjust rate}, \beta_{min}), & \text{if } \text{similarity score} < \text{similarity threshold}
+\max(\beta - \alpha_{adjust_rate}, \alpha_{min}), & \text{otherwise}
+\max(\beta - \alpha_\text{adjust rate}, \alpha_{min}), & \text{if } \text{validity score} < \text{validity threshold} \\
+\max(\beta - \alpha_\text{adjust rate}, \alpha_{min}), & \text{otherwise}
+\end{cases} $$
+
+$$ \beta_{new} = \begin{cases}
+\min(\alpha + \beta_\text{adjust rate}, \beta_{max}), & \text{if } \text{similarity score} < \text{similarity threshold} \\
+\max(\beta - \beta_{adjust_rate}, \beta_{min}), & \text{otherwise}
+\min(\beta + \beta_\text{adjust rate}, \beta_{max}), & \text{if } \text{similarity score} < \text{similarity threshold} \\
+\max(\beta - \beta_\text{adjust rate}, \beta_{min}), & \text{otherwise}
 \end{cases} $$
 
 ## Acknowledgements
