@@ -166,6 +166,3 @@ $$ \beta_{new} = \begin{cases}
 I acknowledge the use of the base transformer architecture from https://github.com/hkproj/pytorch-transformer, which served as a starting point for the model developed in this project. The architecture was substantially modified and adapted to suit the specific requirements of SMILES generation and molecular property prediction.
 
 I also utilized code from the Molecular Sets repository (https://github.com/molecularsets/moses), specifically the methods found in utils/sascorer.py, including calculateScore, novelty, and fraction_valid. Due to the outdated nature of the library, direct usage was not feasible; therefore, I integrated and adapted the necessary components into this project to ensure compatibility and functionality.
-
-This dynamic adjustment helps balance the different components of the loss function throughout the training process.
-
