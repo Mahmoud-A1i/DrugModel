@@ -33,6 +33,7 @@ DrugModel/
 │
 ├── utils/
 │   ├── __init__.py
+│   ├── sascorer.py
 │   ├── metrics.py
 │   └── loss.py
 │
@@ -155,8 +156,11 @@ $$ \alpha_{new} = \begin{cases}
 \max(\alpha - \alpha_\text{adjust rate}, \alpha_{min}), & \text{otherwise}
 \end{cases} $$
 
-$$ \beta_{new} = \begin{cases}
-\min(\beta + \beta_\text{adjust rate}, \beta_{max}), & \text{if } \text{similarity score} < \text{similarity threshold} \\
+## Acknowledgements
+
+I acknowledge the use of the base transformer architecture from https://github.com/hkproj/pytorch-transformer, which served as a starting point for the model developed in this project. The architecture was substantially modified and adapted to suit the specific requirements of SMILES generation and molecular property prediction.
+
+I also utilized code from the Molecular Sets repository (https://github.com/molecularsets/moses), specifically the methods found in utils/sascorer.py, including calculateScore, novelty, and fraction_valid. Due to the outdated nature of the library, direct usage was not feasible; therefore, I integrated and adapted the necessary components into this project to ensure compatibility and functionality.
 \max(\beta - \beta_\text{adjust rate}, \beta_{min}), & \text{otherwise}
 \end{cases} $$
 
