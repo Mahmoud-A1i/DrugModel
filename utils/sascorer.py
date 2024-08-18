@@ -1,3 +1,10 @@
+"""
+This folder contains code obtained from https://github.com/molecularsets/moses. This is not my code.
+
+Due to the outdated nature of the library, direct usage was not feasible; therefore, I integrated and 
+adapted the necessary components into this project to ensure compatibility and functionality.
+"""
+
 #
 # calculation of synthetic accessibility score as described in:
 #
