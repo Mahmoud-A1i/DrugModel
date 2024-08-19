@@ -38,7 +38,7 @@ def parse_args() -> argparse.Namespace:
     generate_parser.add_argument('--weights_path', type=str, help='Path to model weights file')
     generate_parser.add_argument('--best', action='store_true', help='Use the best model weights')
     generate_parser.add_argument('--input_file', type=str, required=True, help='Path to input file')
-    generate_parser.add_argument('--output_file', type=str, required=True, help='Path to output file')
+    generate_parser.add_argument('--output_file', type=str, default=None, help='Path to output file')
 
     # Test mode
     test_parser = subparsers.add_parser('test', help='Run model tests')
@@ -79,7 +79,9 @@ def main() -> None:
         config = get_config(large=args.large)
         input_data = load_input_data(args.input_file)
         generated_smiles = generate(config, input_data, args.weights_path, args.best)
-        save_output_data(generated_smiles, args.output_file)
+        print(generated_smiles)
+        if args.output_file is not None:
+            save_output_data(generated_smiles, args.output_file)
 
     elif args.mode == 'test':
         config = get_config(large=args.large)
