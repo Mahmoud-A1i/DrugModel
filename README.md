@@ -108,59 +108,6 @@ Our model is based on the transformer architecture with some modifications tailo
 
 This architecture allows the model to consider not just the partial SMILES string, but also the desired molecular properties and scaffold information during generation. The self-attention mechanisms help the model understand the relationships between different parts of the SMILES string, while the cross-attention mechanisms allow it to incorporate the additional property and scaffold information effectively.
 
-## Custom Loss Function
-
-Our model uses a custom loss function that combines cross-entropy loss with chemical validity and similarity losses. This helps ensure that the generated molecules are not only syntactically correct but also chemically valid and similar to the target molecules.
-
-The total loss is calculated as follows:
-
-$$ L_{total} = L_{CE} + \alpha \cdot L_{validity} + \beta \cdot L_{similarity} $$
-
-Where:
-- $L_{CE}$ is the cross-entropy loss
-- $L_{validity}$ is the validity loss
-- $L_{similarity}$ is the similarity loss
-- $\alpha$ and $\beta$ are dynamically adjusted coefficients
-
-### Cross-Entropy Loss ($L_{CE}$)
-
-The cross-entropy loss is calculated using a standard cross-entropy function with label smoothing:
-
-$$ L_{CE} = - \sum_{i} y_i \log(p_i) $$
-
-Where $y_i$ are the smoothed target probabilities and $p_i$ are the predicted probabilities.
-
-### Validity Loss ($L_{validity}$)
-
-The validity loss is binary, penalizing invalid SMILES strings:
-
-$$ L_{validity} = \begin{cases} 
-1, & \text{if SMILES is invalid} \\
-0, & \text{if SMILES is valid}
-\end{cases} $$
-
-### Similarity Loss ($L_{similarity}$)
-
-The similarity loss is based on the Tanimoto similarity between the generated and target molecules:
-
-$$ L_{similarity} = 1 - \text{TanimotoSimilarity}(FP_{generated}, FP_{target}) $$
-
-Where $FP_{generated}$ and $FP_{target}$ are Morgan fingerprints of the generated and target molecules, respectively.
-
-### Dynamic Coefficient Adjustment
-
-The coefficients $\alpha$ and $\beta$ are adjusted during training based on the model's performance at the end of every epoch:
-
-$$ \alpha_{new} = \begin{cases} 
-\min(\alpha + \alpha_\text{adjust rate}, \alpha_{max}), & \text{if } \text{validity score} < \text{validity threshold} \\
-\max(\beta - \alpha_\text{adjust rate}, \alpha_{min}), & \text{otherwise}
-\end{cases} $$
-
-$$ \beta_{new} = \begin{cases}
-\min(\alpha + \beta_\text{adjust rate}, \beta_{max}), & \text{if } \text{similarity score} < \text{similarity threshold} \\
-\max(\beta - \beta_\text{adjust rate}, \beta_{min}), & \text{otherwise}
-\end{cases} $$
-
 ## Acknowledgements
 
 I acknowledge the use of the base transformer architecture from https://github.com/hkproj/pytorch-transformer, which served as a starting point for the model developed in this project. The architecture was substantially modified and adapted to suit the specific requirements of SMILES generation and molecular property prediction.
